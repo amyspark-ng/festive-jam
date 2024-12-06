@@ -5,7 +5,7 @@
 		"build": "vite build",
 		"dev": "vite",
 		"preview": "vite preview",
-		"zip": "pnpm run build && mkdir -p dist && zip -r dist/game.zip dist -x \"**/.DS_Store\"",
+		"zip": "bun run build && mkdir -p dist && zip -r dist/game.zip dist -x \"**/.DS_Store\"",
 		"check": "tsc"
 	},
 	"dependencies": {
