@@ -1,11 +1,12 @@
 import kaplay from "kaplay";
-// import "kaplay/global"; // uncomment if you want to use without the k. prefix
+import "kaplay/global"; // uncomment if you want to use without the k. prefix
+import { loadAssets } from "./loader";
 
-const k = kaplay();
+const k = kaplay({
+	// These will be changed later probably
+	width: 1024,
+	height: 576,
+});
 
-k.loadRoot("./"); // A good idea for Itch.io publishing later
-k.loadSprite("bean", "sprites/bean.png");
-
-k.add([k.pos(120, 80), k.sprite("bean")]);
-
-k.onClick(() => k.addKaboom(k.mousePos()));
+loadAssets();
+go("gamescene")

@@ -18,6 +18,7 @@ export default defineConfig({
     base: "./",
     server: {
         port: 8000,
+        hmr: false,
     },
     build: {
         // disable this for low bundle sizes
