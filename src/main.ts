@@ -8,5 +8,6 @@ const k = kaplay({
 	height: 576,
 });
 
+setCursor("none");
 loadAssets();
 go("gamescene")
