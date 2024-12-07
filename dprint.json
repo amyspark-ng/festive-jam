@@ -6,6 +6,7 @@
 		"useTabs": true,
 		"semiColons": "always",
 		"quoteStyle": "preferDouble",
+		"nextControlFlowPosition": "nextLine",
 	},
 	"json": {
 		"indentWidth": 4,

@@ -1,6 +1,6 @@
 import { AreaComp, GameObj } from "kaplay";
-import { addConfetti } from "../confetti";
-import { DragComp } from "../drag";
+import { addConfetti } from "../plugins/confetti";
+import { DragComp } from "../plugins/drag";
 import utils from "../utils";
 
 /** How long should minigames last */
@@ -36,12 +36,14 @@ function createCursor() {
 					if (allHoverObjs.some((otherObj) => otherObj.isHovering())) return;
 					else cursor.play("cursor");
 				}
-			} // cursor runs when the obj is being hovered
+			}
+			// cursor runs when the obj is being hovered
 			else {
 				if (isMouseDown("left")) {
 					if (hoverObj.is("ignorepoint") && !hoverObj.dragging) return;
 					cursor.play("grab");
-				} else {
+				}
+				else {
 					if (!hoverObj.is("ignorepoint")) cursor.play("point");
 					else cursor.play("cursor");
 				}
@@ -68,8 +70,7 @@ function createUI() {
 
 /** A list of all the minigame ids */
 export const minigamesList = [
-	"minigame1",
-	"minigame2",
+	"movebeans",
 ] as const;
 
 /** The id of a minigame */
@@ -82,7 +83,7 @@ export const minigames: Partial<Record<minigameId, minigameFunc>> = {};
 /** Class that handles the base behaviour of any minigame */
 export class MinigameState {
 	/** The id of the current minigame */
-	currentMinigame: minigameId = "minigame1";
+	currentMinigame: minigameId = "movebeans";
 
 	/** The amount of letters/toys the player got at the initial minigame  */
 	objectAmount: number = 0;
@@ -128,8 +129,8 @@ export class MinigameState {
 	}
 
 	constructor(newMinigame: minigameId) {
-		if (!newMinigame) newMinigame = "minigame1";
-		this.currentMinigame = "minigame1";
+		if (!newMinigame) newMinigame = "movebeans";
+		this.currentMinigame = "movebeans";
 
 		let minigameDone = false;
 
@@ -141,27 +142,37 @@ export class MinigameState {
 		});
 
 		onUpdate(() => {
+			// time counter
 			if (this.time < MINIGAME_TIME) {
 				this.time += dt();
-			} else if (this.time >= MINIGAME_TIME && !minigameDone) {
+			}
+			else if (this.time >= MINIGAME_TIME && !minigameDone) {
 				minigameDone = true;
 				this.triggerEvent("timeFinished");
 			}
 
 			this.ui.timer.text = utils.formatSeconds(this.time);
+
+			// cursor stuff
 		});
 
 		// you're done
 		this.onTimeFinished(() => {
 			if (this.hasWinned) {
 				debug.log("YIPPEEE");
-				addConfetti({ pos: center() });
-			} else {
+				addConfetti({ pos: vec2(center().x, height()) });
+			}
+			else {
 				debug.log("boooo");
 				shake();
 			}
 
-			get("drag").forEach((obj: GameObj<DragComp>) => obj.drop());
+			get("drag").forEach((obj: GameObj<DragComp>) => {
+				obj.drop();
+				obj.unuse("drag");
+			});
+			get("hover").forEach((obj: GameObj) => obj.unuse("hover"));
+			get("area").forEach((obj: GameObj<AreaComp>) => obj.unuse("area"));
 		});
 	}
 }

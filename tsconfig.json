@@ -5,9 +5,10 @@
 		"moduleResolution": "node",
 		"types": [
 			"kaplay/global"
-		]
+		],
+		"module": "ES2022"
 	},
 	"include": [
 		"src/**/*.ts"
-	],
+	]
 }

@@ -1,7 +1,7 @@
-import { drag } from "../../drag";
+import { drag } from "../../plugins/drag";
 import { minigames, MinigameState } from "../MinigameState";
 
-minigames["minigame1"] = (state: MinigameState) => {
+minigames["movebeans"] = (state: MinigameState) => {
 	// Test minigame
 	state.cursor.onUpdate(() => {
 		state.cursor.color = WHITE.lerp(RED, state.time / 12);

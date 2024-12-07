@@ -8,5 +8,9 @@ const k = kaplay({
 });
 
 setCursor("none");
-loadAssets();
-go("gamescene");
+await loadAssets();
+
+onLoad(() => {
+	if (isFocused()) go("menuscene");
+	else go("focusscene");
+});

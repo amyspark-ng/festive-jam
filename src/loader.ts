@@ -1,6 +1,8 @@
-import { gamescene } from "./play/gamescene";
+import { GameScene } from "./play/GameScene";
+import { FocusScene } from "./scenes/FocusScene";
+import { MenuScene } from "./scenes/MenuScene";
 
-export function loadAssets() {
+export async function loadAssets() {
 	loadRoot("./"); // A good idea for Itch.io publishing later
 	loadBean();
 
@@ -14,5 +16,7 @@ export function loadAssets() {
 		},
 	});
 
-	gamescene();
+	MenuScene();
+	FocusScene();
+	GameScene();
 }
