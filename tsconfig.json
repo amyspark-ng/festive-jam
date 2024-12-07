@@ -2,9 +2,12 @@
 	"compilerOptions": {
 		"noEmit": true,
 		"target": "esnext",
-		"moduleResolution": "node"
+		"moduleResolution": "node",
+		"types": [
+			"kaplay/global"
+		]
 	},
 	"include": [
 		"src/**/*.ts"
-	]
+	],
 }
