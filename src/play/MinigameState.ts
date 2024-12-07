@@ -70,10 +70,23 @@ function createUI() {
 	}
 }
 
+/** A list of all the minigame ids */
+export const minigamesList = [
+	"minigame1",
+	"minigame2",
+] as const
+
+/** The id of a minigame */
+export type minigameId = typeof minigamesList[number]
+type minigameFunc = (minigame:MinigameState) => void
+
+/** The object containing all the minigames */
+export const minigames: Partial<Record<minigameId, minigameFunc>> = {}
+
 /** Class that handles the base behaviour of any minigame */
 export class MinigameState {
 	/** The id of the current minigame */
-	currentMinigame: string = "some"
+	currentMinigame: minigameId = "minigame1";
 	
 	/** The amount of letters/toys the player got at the initial minigame  */
 	objectAmount: number = 0;
@@ -118,9 +131,9 @@ export class MinigameState {
 		return getTreeRoot().on("timeFinished", action)
 	}
 
-	constructor(newMinigame:string) {
-		if (!newMinigame) newMinigame = "namehere"
-		this.currentMinigame = newMinigame
+	constructor(newMinigame:minigameId) {
+		if (!newMinigame) newMinigame = "minigame1"
+		this.currentMinigame = "minigame1"
 
 		let minigameDone = false
 
