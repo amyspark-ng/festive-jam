@@ -1,10 +1,10 @@
-import { AreaComp, GameObj } from "kaplay"
-import { DragComp } from "../drag"
-import { addConfetti } from "../confetti"
-import utils from "../utils"
+import { AreaComp, GameObj } from "kaplay";
+import { addConfetti } from "../confetti";
+import { DragComp } from "../drag";
+import utils from "../utils";
 
 /** How long should minigames last */
-const MINIGAME_TIME = 5
+const MINIGAME_TIME = 5;
 
 /** Creates a cursor object */
 function createCursor() {
@@ -19,42 +19,38 @@ function createCursor() {
 		z(100),
 		{
 			/** How lerped the cursor should be */
-			lerp: 0.9
-		}
-	])
+			lerp: 0.9,
+		},
+	]);
 
 	cursor.onUpdate(() => {
-		cursor.pos = lerp(cursor.pos, mousePos(), cursor.lerp)
-	
+		cursor.pos = lerp(cursor.pos, mousePos(), cursor.lerp);
+
 		// cursor animation
-		const allHoverObjs = get("hover", { recursive: true })
+		const allHoverObjs = get("hover", { recursive: true });
 
-		allHoverObjs.forEach((hoverObj:GameObj<DragComp | AreaComp>) => {
+		allHoverObjs.forEach((hoverObj: GameObj<DragComp | AreaComp>) => {
 			if (!hoverObj.isHovering()) {
-				if (hoverObj.dragging) cursor.play("grab")
+				if (hoverObj.dragging) cursor.play("grab");
 				else {
-					if (allHoverObjs.some((otherObj) => otherObj.isHovering())) return
-					else cursor.play("cursor")
+					if (allHoverObjs.some((otherObj) => otherObj.isHovering())) return;
+					else cursor.play("cursor");
 				}
-			}
-
-			// cursor runs when the obj is being hovered
+			} // cursor runs when the obj is being hovered
 			else {
 				if (isMouseDown("left")) {
 					if (hoverObj.is("ignorepoint") && !hoverObj.dragging) return;
-					cursor.play("grab")
-				}
-
-				else {
-					if (!hoverObj.is("ignorepoint")) cursor.play("point")
-					else cursor.play("cursor")
+					cursor.play("grab");
+				} else {
+					if (!hoverObj.is("ignorepoint")) cursor.play("point");
+					else cursor.play("cursor");
 				}
 			}
-		})
-	})
+		});
+	});
 
 	return cursor;
-} 
+}
 
 /** Creates the UI for the base minigame */
 function createUI() {
@@ -63,31 +59,31 @@ function createUI() {
 		pos(10, 10),
 		z(10),
 		color(BLACK),
-	])
+	]);
 
 	return {
 		timer,
-	}
+	};
 }
 
 /** A list of all the minigame ids */
 export const minigamesList = [
 	"minigame1",
 	"minigame2",
-] as const
+] as const;
 
 /** The id of a minigame */
-export type minigameId = typeof minigamesList[number]
-type minigameFunc = (minigame:MinigameState) => void
+export type minigameId = typeof minigamesList[number];
+type minigameFunc = (minigame: MinigameState) => void;
 
 /** The object containing all the minigames */
-export const minigames: Partial<Record<minigameId, minigameFunc>> = {}
+export const minigames: Partial<Record<minigameId, minigameFunc>> = {};
 
 /** Class that handles the base behaviour of any minigame */
 export class MinigameState {
 	/** The id of the current minigame */
 	currentMinigame: minigameId = "minigame1";
-	
+
 	/** The amount of letters/toys the player got at the initial minigame  */
 	objectAmount: number = 0;
 
@@ -101,19 +97,19 @@ export class MinigameState {
 	cursor: ReturnType<typeof createCursor> = null;
 
 	/** The UI for the minigame */
-	ui: ReturnType<typeof createUI> =  null;
+	ui: ReturnType<typeof createUI> = null;
 
 	/** The events of the minigame */
 	private events = [
 		"timeFinished",
-	] as const
+	] as const;
 
 	/** Wheter the player has winned the minigame */
-	private hasWinned: boolean = false
+	private hasWinned: boolean = false;
 
 	/** Call when the player has winned the minigame */
 	setWin() {
-		this.hasWinned = true
+		this.hasWinned = true;
 	}
 
 	/** Wheter to finish the minigame instantly */
@@ -123,51 +119,49 @@ export class MinigameState {
 
 	/** Triggers an event */
 	triggerEvent(event: typeof this.events[number], params?: any) {
-		return getTreeRoot().trigger(event, params)
+		return getTreeRoot().trigger(event, params);
 	}
 
 	/** Will run when the time for the minigame is finished */
 	onTimeFinished(action: () => void) {
-		return getTreeRoot().on("timeFinished", action)
+		return getTreeRoot().on("timeFinished", action);
 	}
 
-	constructor(newMinigame:minigameId) {
-		if (!newMinigame) newMinigame = "minigame1"
-		this.currentMinigame = "minigame1"
+	constructor(newMinigame: minigameId) {
+		if (!newMinigame) newMinigame = "minigame1";
+		this.currentMinigame = "minigame1";
 
-		let minigameDone = false
+		let minigameDone = false;
 
-		this.cursor = createCursor()
-		this.ui = createUI()
+		this.cursor = createCursor();
+		this.ui = createUI();
 
-		onKeyPress("r", () => { go("gamescene") })
+		onKeyPress("r", () => {
+			go("gamescene");
+		});
 
 		onUpdate(() => {
 			if (this.time < MINIGAME_TIME) {
-				this.time += dt()
+				this.time += dt();
+			} else if (this.time >= MINIGAME_TIME && !minigameDone) {
+				minigameDone = true;
+				this.triggerEvent("timeFinished");
 			}
 
-			else if (this.time >= MINIGAME_TIME && !minigameDone) {
-				minigameDone = true
-				this.triggerEvent("timeFinished")
-			}
-		
-			this.ui.timer.text = utils.formatSeconds(this.time)
-		})
+			this.ui.timer.text = utils.formatSeconds(this.time);
+		});
 
 		// you're done
 		this.onTimeFinished(() => {
 			if (this.hasWinned) {
-				debug.log("YIPPEEE")
-				addConfetti({ pos: center() })
+				debug.log("YIPPEEE");
+				addConfetti({ pos: center() });
+			} else {
+				debug.log("boooo");
+				shake();
 			}
 
-			else {
-				debug.log("boooo")
-				shake()
-			}
-			
-			get("drag").forEach((obj:GameObj<DragComp>) => obj.drop())
-		})
+			get("drag").forEach((obj: GameObj<DragComp>) => obj.drop());
+		});
 	}
 }

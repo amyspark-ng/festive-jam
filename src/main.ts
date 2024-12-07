@@ -9,4 +9,4 @@ const k = kaplay({
 
 setCursor("none");
 loadAssets();
-go("gamescene")
+go("gamescene");

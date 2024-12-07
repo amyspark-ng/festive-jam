@@ -11,8 +11,8 @@ export function loadAssets() {
 			cursor: 0,
 			point: 1,
 			grab: 2,
-		}
-	})
+		},
+	});
 
 	gamescene();
 }
