@@ -31,12 +31,17 @@ export const minigamesList = [
 	"santa1",
 ] as const;
 
-/** The id of a minigame */
+/** The id of a minigame (will be something like kid1, or santa1) */
 export type minigameId = typeof minigamesList[number];
-type minigameFunc = (minigame: MinigameState) => void;
+type minigameContent = {
+	/** Description of what you actually have to do to win */
+	description: string;
+	/** The actual function that runs and holds the content of the minigame */
+	game: (minigame: MinigameState) => void;
+};
 
 /** The object containing all the minigames */
-export const minigames: Partial<Record<minigameId, minigameFunc>> = {};
+export const minigames: Partial<Record<minigameId, minigameContent>> = {};
 
 /** Class that handles the base behaviour of any minigame */
 export class MinigameState {

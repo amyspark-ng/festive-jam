@@ -1,3 +1,5 @@
+import { GameState } from "../play/GameScene";
+
 export const MenuScene = () =>
 	scene("menuscene", () => {
 		let inKidOrSantaScene = false;
@@ -24,7 +26,7 @@ export const MenuScene = () =>
 			});
 
 			kidBtn.onClick(() => {
-				go("gamescene", "kid", 1);
+				go("gamescene", { player: "Kid", step: 1, score: 0 } as GameState);
 			});
 
 			const santaBtn = add([
@@ -41,7 +43,7 @@ export const MenuScene = () =>
 			});
 
 			santaBtn.onClick(() => {
-				go("gamescene", "santa", 1);
+				go("gamescene", { player: "Santa", step: 1, score: 0 } as GameState);
 			});
 		}
 
