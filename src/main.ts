@@ -1,4 +1,5 @@
 import kaplay from "kaplay";
+import { createCursor } from "./cursor";
 import { loadAssets } from "./loader";
 
 const k = kaplay({
@@ -11,6 +12,7 @@ setCursor("none");
 await loadAssets();
 
 onLoad(() => {
+	createCursor();
 	if (isFocused()) go("menuscene");
 	else go("focusscene");
 });

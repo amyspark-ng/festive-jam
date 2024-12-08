@@ -83,6 +83,11 @@ export class utils {
 		return `${Math.floor(timeInSeconds)}:${Math.floor((timeInSeconds - Math.floor(timeInSeconds)) * 100)}`;
 	}
 
+	/** Removes numbers from a string */
+	static removeNumbers(str: string) {
+		return str.replace(/\d/g, "");
+	}
+
 	/** Converts string to kebab case (eg: Hello, World! -> hello-world) */
 	static kebabCase(str: string) {
 		return str.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase().replaceAll(" ", "-").replaceAll("'", "");
@@ -97,7 +102,8 @@ export class utils {
 	static formatNumber(num: number, opts: coolFormatNumberOpt) {
 		if (opts.type == "decimal") {
 			return num.toFixed(1);
-		} else {
+		}
+		else {
 			return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 		}
 	}

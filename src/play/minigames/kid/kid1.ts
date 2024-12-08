@@ -1,10 +1,11 @@
-import { drag } from "../../plugins/drag";
-import { minigames, MinigameState } from "../MinigameState";
+import { cursor } from "../../../cursor";
+import { drag } from "../../../plugins/drag";
+import { minigames, MinigameState } from "../../MinigameState";
 
-minigames["movebeans"] = (state: MinigameState) => {
+minigames["kid1"] = (state: MinigameState) => {
 	// Test minigame
-	state.cursor.onUpdate(() => {
-		state.cursor.color = WHITE.lerp(RED, state.time / 12);
+	cursor().onUpdate(() => {
+		cursor().color = WHITE.lerp(RED, state.time / 12);
 	});
 
 	const beanAmount = 5;

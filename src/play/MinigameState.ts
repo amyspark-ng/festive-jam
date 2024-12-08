@@ -1,58 +1,14 @@
 import { AreaComp, GameObj } from "kaplay";
+import { createCursor, cursor } from "../cursor";
 import { addConfetti } from "../plugins/confetti";
 import { DragComp } from "../plugins/drag";
 import utils from "../utils";
 
-/** How long should minigames last */
+/** Total amount of seconds a single minigame lasts */
 const MINIGAME_TIME = 5;
 
-/** Creates a cursor object */
-function createCursor() {
-	const cursor = add([
-		sprite("cursor", { anim: "cursor" }),
-		pos(mousePos()),
-		anchor("topleft"),
-		scale(),
-		rotate(0),
-		color(),
-		opacity(),
-		z(100),
-		{
-			/** How lerped the cursor should be */
-			lerp: 0.9,
-		},
-	]);
-
-	cursor.onUpdate(() => {
-		cursor.pos = lerp(cursor.pos, mousePos(), cursor.lerp);
-
-		// cursor animation
-		const allHoverObjs = get("hover", { recursive: true });
-
-		allHoverObjs.forEach((hoverObj: GameObj<DragComp | AreaComp>) => {
-			if (!hoverObj.isHovering()) {
-				if (hoverObj.dragging) cursor.play("grab");
-				else {
-					if (allHoverObjs.some((otherObj) => otherObj.isHovering())) return;
-					else cursor.play("cursor");
-				}
-			}
-			// cursor runs when the obj is being hovered
-			else {
-				if (isMouseDown("left")) {
-					if (hoverObj.is("ignorepoint") && !hoverObj.dragging) return;
-					cursor.play("grab");
-				}
-				else {
-					if (!hoverObj.is("ignorepoint")) cursor.play("point");
-					else cursor.play("cursor");
-				}
-			}
-		});
-	});
-
-	return cursor;
-}
+/** Total amount of steps a run has */
+export const TOTAL_STEPS = 2;
 
 /** Creates the UI for the base minigame */
 function createUI() {
@@ -70,7 +26,9 @@ function createUI() {
 
 /** A list of all the minigame ids */
 export const minigamesList = [
-	"movebeans",
+	"kid1",
+	"kid2",
+	"santa1",
 ] as const;
 
 /** The id of a minigame */
@@ -83,19 +41,13 @@ export const minigames: Partial<Record<minigameId, minigameFunc>> = {};
 /** Class that handles the base behaviour of any minigame */
 export class MinigameState {
 	/** The id of the current minigame */
-	currentMinigame: minigameId = "movebeans";
+	currentMinigame: minigameId;
 
 	/** The amount of letters/toys the player got at the initial minigame  */
 	objectAmount: number = 0;
 
-	/** Wheter the player is playing as santa or a kid */
-	player: "Santa" | "Kid" = "Kid";
-
 	/** Time from 0 to 12 seconds */
 	time: number = 0;
-
-	/** The cursor of the game */
-	cursor: ReturnType<typeof createCursor> = null;
 
 	/** The UI for the minigame */
 	ui: ReturnType<typeof createUI> = null;
@@ -129,12 +81,10 @@ export class MinigameState {
 	}
 
 	constructor(newMinigame: minigameId) {
-		if (!newMinigame) newMinigame = "movebeans";
-		this.currentMinigame = "movebeans";
+		this.currentMinigame = newMinigame;
 
 		let minigameDone = false;
 
-		this.cursor = createCursor();
 		this.ui = createUI();
 
 		onKeyPress("r", () => {
