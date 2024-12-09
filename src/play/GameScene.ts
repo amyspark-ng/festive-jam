@@ -24,35 +24,34 @@ for (let i = 0; i < minigamesList.length; i++) {
 }
 
 /** The scene where the game actually runs */
-export const GameScene = () =>
-	scene("gamescene", (stateParam: GameState) => {
-		const gameState = new GameState(stateParam);
+scene("gamescene", (stateParam: GameState) => {
+	const gameState = new GameState(stateParam);
 
-		const minigameState = new MinigameState((gameState.player.toLowerCase() + gameState.step) as minigameId);
+	const minigameState = new MinigameState((gameState.player.toLowerCase() + gameState.step) as minigameId);
 
-		const contentOfMinigame = minigames[minigameState.currentMinigame];
-		if (contentOfMinigame) {
-			// very crucial line, runs the actual content of the minigame
-			contentOfMinigame.game(minigameState);
-		}
-		else {
-			throw new Error("Minigame not found: " + minigameState.currentMinigame);
-		}
+	const contentOfMinigame = minigames[minigameState.currentMinigame];
+	if (contentOfMinigame) {
+		// very crucial line, runs the actual content of the minigame
+		contentOfMinigame.game(minigameState);
+	}
+	else {
+		throw new Error("Minigame not found: " + minigameState.currentMinigame);
+	}
 
-		minigameState.onTimeFinished(() => {
-			debug.log("MINIGAME FINISHED");
+	minigameState.onTimeFinished(() => {
+		debug.log("MINIGAME FINISHED");
 
-			wait(1, () => {
-				// still there's a step left
-				if (gameState.step < TOTAL_STEPS) {
-					gameState.step++;
-					go("gamescene", gameState);
-				}
-				// all steps are done, go home
-				else {
-					debug.log("You finished you win or loss idk");
-					go("menuscene");
-				}
-			});
+		wait(1, () => {
+			// still there's a step left
+			if (gameState.step < TOTAL_STEPS) {
+				gameState.step++;
+				go("gamescene", gameState);
+			}
+			// all steps are done, go home
+			else {
+				debug.log("You finished you win or loss idk");
+				go("menuscene");
+			}
 		});
 	});
+});
