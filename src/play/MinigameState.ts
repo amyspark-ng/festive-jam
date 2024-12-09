@@ -1,4 +1,4 @@
-import { AreaComp, GameObj } from "kaplay";
+import { AreaComp, GameObj, PosComp } from "kaplay";
 import { createCursor, cursor } from "../cursor";
 import { addConfetti } from "../plugins/confetti";
 import { DragComp } from "../plugins/drag";
@@ -13,10 +13,30 @@ export const TOTAL_STEPS = 2;
 /** Creates the UI for the base minigame */
 function createUI() {
 	const timer = add([
-		text("00:00"),
-		pos(10, 10),
-		z(10),
+		sprite("timer_ball"),
+		pos(),
+		anchor("center"),
+		scale(),
+		opacity(),
+		color(),
+		z(99),
+		{
+			text: "12",
+		},
+	]);
+
+	timer.pos = vec2(timer.width / 2, timer.height / 2);
+
+	timer.add([
+		pos(0, 10),
+		text(timer.text, { align: "center" }),
 		color(BLACK),
+		anchor("center"),
+		{
+			update() {
+				this.text = timer.text;
+			},
+		},
 	]);
 
 	return {
@@ -35,7 +55,7 @@ export const minigamesList = [
 export type minigameId = typeof minigamesList[number];
 type minigameContent = {
 	/** Description of what you actually have to do to win */
-	description: string;
+	description?: string;
 	/** The actual function that runs and holds the content of the minigame */
 	game: (minigame: MinigameState) => void;
 };
@@ -96,17 +116,19 @@ export class MinigameState {
 			go("gamescene");
 		});
 
+		this.time = MINIGAME_TIME;
+
 		onUpdate(() => {
 			// time counter
-			if (this.time < MINIGAME_TIME) {
-				this.time += dt();
+			if (this.time > 0) {
+				this.time -= dt();
 			}
-			else if (this.time >= MINIGAME_TIME && !minigameDone) {
+			else if (this.time <= 0 && !minigameDone) {
 				minigameDone = true;
 				this.triggerEvent("timeFinished");
 			}
 
-			this.ui.timer.text = utils.formatSeconds(this.time);
+			this.ui.timer.text = Math.round(this.time).toString();
 
 			// cursor stuff
 		});
