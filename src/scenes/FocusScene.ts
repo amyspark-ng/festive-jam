@@ -1,5 +1,5 @@
 /** Focus scene */
-scene("focusscene", () => {
+scene("FocusScene", () => {
 	onDraw(() => {
 		drawRect({
 			width: width(),
@@ -18,6 +18,6 @@ scene("focusscene", () => {
 	});
 
 	onClick(() => {
-		go("menuscene");
+		go("MenuScene");
 	});
 });

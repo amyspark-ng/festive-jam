@@ -1,11 +1,10 @@
-import { AreaComp, GameObj, PosComp } from "kaplay";
-import { createCursor, cursor } from "../cursor";
+import { AreaComp, GameObj } from "kaplay";
 import { addConfetti } from "../plugins/confetti";
 import { DragComp } from "../plugins/drag";
-import utils from "../utils";
+import { GameState } from "./GameScene";
 
 /** Total amount of seconds a single minigame lasts */
-const MINIGAME_TIME = 5;
+export const MINIGAME_TIME = 12;
 
 /** Total amount of steps a run has */
 export const TOTAL_STEPS = 2;
@@ -57,7 +56,7 @@ type minigameContent = {
 	/** Description of what you actually have to do to win */
 	description?: string;
 	/** The actual function that runs and holds the content of the minigame */
-	game: (minigame: MinigameState) => void;
+	game: (minigame: MinigameState, state: GameState) => void;
 };
 
 /** The object containing all the minigames */
@@ -67,9 +66,6 @@ export const minigames: Partial<Record<minigameId, minigameContent>> = {};
 export class MinigameState {
 	/** The id of the current minigame */
 	currentMinigame: minigameId;
-
-	/** The amount of letters/toys the player got at the initial minigame  */
-	objectAmount: number = 0;
 
 	/** Time from 0 to 12 seconds */
 	time: number = 0;
@@ -83,7 +79,10 @@ export class MinigameState {
 	] as const;
 
 	/** Wheter the player has winned the minigame */
-	private hasWinned: boolean = false;
+	hasWinned: boolean = false;
+
+	/** Wheter the minigame has finished */
+	hasFinished: boolean = false;
 
 	/** Call when the player has winned the minigame */
 	setWin() {
@@ -92,6 +91,7 @@ export class MinigameState {
 
 	/** Wheter to finish the minigame instantly */
 	finishMinigame() {
+		this.hasFinished = true;
 		return this.triggerEvent("timeFinished");
 	}
 
@@ -108,12 +108,10 @@ export class MinigameState {
 	constructor(newMinigame: minigameId) {
 		this.currentMinigame = newMinigame;
 
-		let minigameDone = false;
-
 		this.ui = createUI();
 
 		onKeyPress("r", () => {
-			go("gamescene");
+			go("GameScene");
 		});
 
 		this.time = MINIGAME_TIME;
@@ -123,8 +121,8 @@ export class MinigameState {
 			if (this.time > 0) {
 				this.time -= dt();
 			}
-			else if (this.time <= 0 && !minigameDone) {
-				minigameDone = true;
+			else if (this.time <= 0 && !this.hasFinished) {
+				this.hasFinished = true;
 				this.triggerEvent("timeFinished");
 			}
 
@@ -144,12 +142,15 @@ export class MinigameState {
 				shake();
 			}
 
-			get("drag").forEach((obj: GameObj<DragComp>) => {
+			// turn off and drop all objects
+			get("drag", { recursive: true }).forEach((obj: GameObj<DragComp>) => {
 				obj.drop();
 				obj.unuse("drag");
 			});
-			get("hover").forEach((obj: GameObj) => obj.unuse("hover"));
-			get("area").forEach((obj: GameObj<AreaComp>) => obj.unuse("area"));
+			get("hover", { recursive: true }).forEach((obj: GameObj) => obj.unuse("hover"));
+			get("area", { recursive: true }).forEach((obj: GameObj<AreaComp>) => {
+				obj.area.scale = vec2(0);
+			});
 		});
 	}
 }

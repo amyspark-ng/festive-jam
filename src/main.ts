@@ -9,11 +9,11 @@ import { GameState } from "./play/GameScene";
 setCursor("none");
 
 function startingScene() {
-	go("gamescene", { player: "Santa", score: 0, step: 1 } as GameState);
+	go("GameScene", { player: "Santa", score: 0, step: 1 } as GameState);
 }
 
 onLoad(() => {
 	createCursor();
 	if (isFocused()) startingScene();
-	else go("focusscene");
+	else go("FocusScene");
 });

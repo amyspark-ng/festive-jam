@@ -12,8 +12,8 @@ importers:
         specifier: ^0.47.6
         version: 0.47.6
       kaplay:
-        specifier: ^3001.0.2
-        version: 3001.0.2
+        specifier: ^3001.1.0-beta.0
+        version: 3001.1.0-beta.0
     devDependencies:
       '@types/node':
         specifier: ^22.10.1
@@ -331,8 +331,8 @@ packages:
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
 
-  kaplay@3001.0.2:
-    resolution: {integrity: sha512-4gyknxI8mSKOywjs7QmWTYjW/tAFJwYRzjWFXnJccHi6okRh1YxNKc5B2oR5CSU5WY75QmdxlAM+u+bpXaIgRw==}
+  kaplay@3001.1.0-beta.0:
+    resolution: {integrity: sha512-iVSZ9zUWByOWvjoVLvGO1cUDrzdyq0yUQwHvUCs1odaR89oEFKiiqOCMmAkWOvyNKWeXAzova10f0mAamCLPyw==}
 
   nanoid@3.3.8:
     resolution: {integrity: sha512-WNLf5Sd8oZxOm+TzppcYk8gVOgP+l58xNy58D0nbUnOxOWRWvlcCV4kUF7ltmI6PsrLl/BgKEyS4mqsGChFN0w==}
@@ -609,7 +609,7 @@ snapshots:
   fsevents@2.3.3:
     optional: true
 
-  kaplay@3001.0.2: {}
+  kaplay@3001.1.0-beta.0: {}
 
   nanoid@3.3.8: {}
 

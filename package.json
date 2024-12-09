@@ -10,7 +10,7 @@
 	},
 	"dependencies": {
 		"dprint": "^0.47.6",
-		"kaplay": "^3001.0.2"
+		"kaplay": "^3001.1.0-beta.0"
 	},
 	"devDependencies": {
 		"@types/node": "^22.10.1",
