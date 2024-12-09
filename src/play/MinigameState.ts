@@ -48,16 +48,12 @@ export const minigamesList = [
 	"kid1",
 	"kid2",
 	"santa1",
+	"santa2",
 ] as const;
 
 /** The id of a minigame (will be something like kid1, or santa1) */
 export type minigameId = typeof minigamesList[number];
-type minigameContent = {
-	/** Description of what you actually have to do to win */
-	description?: string;
-	/** The actual function that runs and holds the content of the minigame */
-	game: (minigame: MinigameState, state: GameState) => void;
-};
+type minigameContent = (minigame: MinigameState, state: GameState) => void;
 
 /** The object containing all the minigames */
 export const minigames: Partial<Record<minigameId, minigameContent>> = {};
@@ -83,11 +79,6 @@ export class MinigameState {
 
 	/** Wheter the minigame has finished */
 	hasFinished: boolean = false;
-
-	/** Call when the player has winned the minigame */
-	setWin() {
-		this.hasWinned = true;
-	}
 
 	/** Wheter to finish the minigame instantly */
 	finishMinigame() {

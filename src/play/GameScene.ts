@@ -31,7 +31,7 @@ scene("GameScene", (stateParam: GameState) => {
 	const contentOfMinigame = minigames[minigameState.currentMinigame];
 	if (contentOfMinigame) {
 		// very crucial line, runs the actual content of the minigame
-		contentOfMinigame.game(minigameState, gameState);
+		contentOfMinigame(minigameState, gameState);
 	}
 	else {
 		throw new Error("Minigame not found: " + minigameState.currentMinigame);

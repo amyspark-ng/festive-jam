@@ -6,5 +6,5 @@ kaplay({
 	height: 360,
 	scale: 1.55,
 	font: "happy",
-	background: [0, 0, 0],
+	// background: [0, 0, 0],
 });

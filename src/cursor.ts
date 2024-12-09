@@ -13,6 +13,7 @@ export function createCursor() {
 		opacity(),
 		z(100),
 		stay(),
+		fixed(),
 		"cursor",
 		{
 			/** How lerped the cursor should be */
