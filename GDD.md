@@ -19,11 +19,11 @@ Casual / Arcade
 # Key Pillars
 
 | despair | learning | velocity |
------ | ------ | ---------
+| ------- | -------- | -------- |
 
 # Visual Style
 
-KAPLAY-like
+640 x 360 (16:9), using the Mulfok32 palette, KAPLAY-like
 
 # Music & Sound Style
 
@@ -53,38 +53,41 @@ The main objective is complete the task of the actor, i.e deliver all letters to
 The main mechanic is complete the process of the task in different minigames, each one with a 12 second time limit. For example, in case of Santa, take all the letters, fabricate the presents, and deliver them.
 
 The first minigame determinates the count of the "object" that will
-be in the next 
+be in the next
 
 ## Enablers
 
 > The actions that take the player (active) or the things that happens (passive) that help the player to achieve the objective.
 
 **Active:**
+
 - Get much of the "object" in the first minigame
 - Complete the different minigames correctly and fast
 - The extra time (relative to "object" quantity) is extra score
 - The player can learn from the fails
 
 **Passive:**
+
 - Luck of some minigames being easier than others
 - Bonus on screen, you have to click them
-
 
 ## Blockers
 
 > Things that try to stop the player (active) or the things that happens (passive) that make the player fail the objective.
 
 **Active:**
+
 - The difficulty of the minigames, being sometimes confused or hard to complete with all the "object"
 
 **Passive:**
+
 - The time limit of 12 seconds
 
 # Core Loop
 
-(todo)
+( todo )
 
-## Win Conditions 
+## Win Conditions
 
 (todo)
 
@@ -94,7 +97,15 @@ be in the next
 
 # Features
 
-(TODO) lol
+## Minigames
+
+### Santa 1: Get the letters
+
+In this minigame, you have to get all the letters with some conditions that are falling from the dispenser. You have to get the most you can in 12 seconds. This determinates the quantity of presents that you have to fabricate in the next minigames.
+
+- **Objective:** Get the most letters with the stamp and color is correct
+- **Enablers:** The letters are falling in a way that you can get them easily
+- **Disablerss:** Some letters are not correct and you have to avoid them
 
 # Team
 
