@@ -1,3 +1,4 @@
+import { _GameSave, GameSave } from "../GameSave";
 import utils from "../utils";
 import { minigameId, minigames, minigamesList, MinigameState, TOTAL_STEPS } from "./MinigameState";
 
@@ -10,9 +11,9 @@ export class GameState {
 	/** The score?? have to check GDD */
 	score: number;
 	/** Wheter you're playing as santa or as a kid */
-	player: "Santa" | "Kid" = "Kid";
+	player: "Santa" | "Kid" = "Santa";
 	/** The step of the process you're in, will be from 1 to {@link TOTAL_STEPS `TOTAL_STEPS`} */
-	step: number = 0;
+	step: number = 1;
 	constructor(instance: GameState) {
 		Object.assign(this, instance);
 	}
@@ -37,6 +38,10 @@ scene("GameScene", (stateParam: GameState) => {
 		throw new Error("Minigame not found: " + minigameState.currentMinigame);
 	}
 
+	onKeyPress("r", () => {
+		go("GameScene", gameState);
+	});
+
 	minigameState.onTimeFinished(() => {
 		debug.log("MINIGAME FINISHED");
 
@@ -53,6 +58,17 @@ scene("GameScene", (stateParam: GameState) => {
 			// all steps are done, go home
 			else {
 				debug.log("You finished you win or loss idk");
+
+				if (gameState.player == "Santa" && !GameSave.hasUnlockedSanta) {
+					GameSave.hasUnlockedSanta = true;
+					GameSave.save();
+				}
+
+				if (gameState.score >= GameSave.highscore) {
+					GameSave.highscore = gameState.score;
+					GameSave.save();
+				}
+
 				go("MenuScene");
 			}
 		});

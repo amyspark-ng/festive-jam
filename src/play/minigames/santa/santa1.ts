@@ -59,7 +59,7 @@ minigames["santa1"] = (minigame: MinigameState, state: GameState) => {
 	function addClickLetter() {
 		let stampKey = getRandStampKey();
 		// chance of getting the actual stamp
-		if (chance(1 / 5)) {
+		if (chance(1 / 3.5)) {
 			stampKey = actualStamp;
 		}
 
@@ -79,25 +79,15 @@ minigames["santa1"] = (minigame: MinigameState, state: GameState) => {
 			letter.pos.y += speed;
 			letter.angle += (speed * direction) / 2;
 
-			// too early
-			if (letter.is("area")) {
-				if (letter.pos.y < letter.height * 1.5) {
-					letter.area.scale = vec2(0);
-				}
-				else {
-					letter.area.scale = vec2(1);
-				}
-
-				// too late
-				if (letter.pos.y > height() - letter.height * 1.45) {
-					letter.destroy();
-					letter.clearEvents();
-				}
+			// too late
+			if (letter.pos.y > height() - letter.height * 1.45) {
+				letter.destroy();
+				letter.clearEvents();
 			}
 		});
 
 		letter.onClick(() => {
-			if (penalized) return;
+			if (penalized || minigame.hasFinished) return;
 
 			if (letter.stamp.key != actualStamp) {
 				penalized = true;
@@ -200,6 +190,8 @@ minigames["santa1"] = (minigame: MinigameState, state: GameState) => {
 		timeInLoop += dt();
 		if (timeInLoop >= loopTime) {
 			timeInLoop = 0;
+
+			// chance of spitting early
 			if (chance(1 / 3)) loopTime = 0.3;
 			else loopTime = 0.6;
 
@@ -207,6 +199,7 @@ minigames["santa1"] = (minigame: MinigameState, state: GameState) => {
 
 			// tween
 			tween(1.3, 1, 0.5, (p) => dispenser.scale.y = p, easings.easeOutQuart);
+			// chance of adding 2 letters
 			if (chance(1 / 5)) {
 				for (let i = 0; i < randi(1, 2); i++) {
 					addClickLetter();

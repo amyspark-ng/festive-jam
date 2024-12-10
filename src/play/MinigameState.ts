@@ -101,10 +101,6 @@ export class MinigameState {
 
 		this.ui = createUI();
 
-		onKeyPress("r", () => {
-			go("GameScene");
-		});
-
 		this.time = MINIGAME_TIME;
 
 		onUpdate(() => {

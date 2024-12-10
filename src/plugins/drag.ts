@@ -61,7 +61,8 @@ export function drag(onlyX: boolean = false, onlyY: boolean = false): DragComp {
 				else if (onlyY == true) this.pos.y = mousePos().y - (offset.y);
 				else this.pos = this.pos = mousePos().sub(offset);
 				this.trigger("dragUpdate");
-			} else {
+			}
+			else {
 				this.dragging = false;
 			}
 		},

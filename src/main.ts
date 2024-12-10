@@ -9,7 +9,8 @@ import { GameState } from "./play/GameScene";
 setCursor("none");
 
 function startingScene() {
-	go("GameScene", { player: "Santa", score: 0, step: 1 } as GameState);
+	// go("GameScene", { player: "Santa", score: 0, step: 1 } as GameState);
+	go("MenuScene");
 }
 
 onLoad(() => {

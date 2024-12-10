@@ -6,7 +6,7 @@ import { minigames, MinigameState } from "../../MinigameState";
 minigames["kid1"] = (minigame: MinigameState, state: GameState) => {
 	// Test minigame
 	cursor().onUpdate(() => {
-		cursor().color = WHITE.lerp(RED, minigame.time / 12);
+		cursor().color = RED.lerp(WHITE, minigame.time / 12);
 	});
 
 	const beanAmount = 5;
@@ -35,7 +35,7 @@ minigames["kid1"] = (minigame: MinigameState, state: GameState) => {
 		]);
 
 		bean.onClick(() => {
-			if (!bean.is("drag")) return;
+			if (bean.has("drag") == false) return;
 			bean.pick();
 		});
 

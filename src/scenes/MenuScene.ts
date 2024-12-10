@@ -53,14 +53,6 @@ scene("MenuScene", () => {
 		anchor("center"),
 	]);
 
-	onKeyPress(["space", "enter"], () => {
-		if (inKidOrSantaScene) return;
-		inKidOrSantaScene = true;
-
-		title?.destroy();
-		KidOrSantaScene();
-	});
-
 	onClick(() => {
 		if (inKidOrSantaScene) return;
 		inKidOrSantaScene = true;
