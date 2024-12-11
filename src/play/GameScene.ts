@@ -1,5 +1,5 @@
 import { _GameSave, GameSave } from "../GameSave";
-import utils from "../utils";
+import utils from "../utils/utils";
 import { minigameId, minigames, minigamesList, MinigameState, TOTAL_STEPS } from "./MinigameState";
 
 /** Class that handles the state of the current run, this contains properties that don't change per minigame
